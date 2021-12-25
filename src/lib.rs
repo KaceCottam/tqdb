@@ -2,8 +2,9 @@
 //!
 //! RSDB is a small library for creating a query-able database that is encoded with json.
 //!
-//! The library is well tested (~96.30% coverage according to [cargo-tarpaulin](https://crates.io/crates/cargo-tarpaulin)) and simple to use with
-//! macros.
+//! The library is well tested (~96.30% coverage according to
+//! [cargo-tarpaulin](https://crates.io/crates/cargo-tarpaulin)) and simple to use with
+//! the help of macros.
 //!
 //! ## Examples
 //!
