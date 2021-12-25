@@ -2,7 +2,7 @@
 name = "tqdb"
 description = "Tiny Query Database (TQDB) is a small library for creating a query-able database that is encoded with json."
 license-file = "LICENSE"
-version = "1.0.1"
+version = "1.0.2"
 edition = "2021"
 homepage = "https://github.com/KaceCottam/tqdb"
 readme = "README.md"
