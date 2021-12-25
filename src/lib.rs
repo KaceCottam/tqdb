@@ -1,6 +1,6 @@
-//! # Rust Small Database (RSDB)
+//! # Tiny Query Database (TQDB)
 //!
-//! RSDB is a small library for creating a query-able database that is encoded with json.
+//! TQDB is a small library for creating a query-able database that is encoded with json.
 //!
 //! The library is well tested (~96.30% coverage according to
 //! [cargo-tarpaulin](https://crates.io/crates/cargo-tarpaulin)) and simple to use with
@@ -11,7 +11,7 @@
 //! We can create a [database][d] using any type.
 //! ```
 //! # use std::iter::FromIterator;
-//! use rsdb::Database;
+//! use tqdb::Database;
 //! let db1: Database<i32> = Database::new();
 //! let db2: Database<&u8> = Database::from_iter("hello world".as_bytes().into_iter());
 //! struct Vec2 { x: i32, y: i32 };
@@ -27,7 +27,7 @@
 //! #[derive(Serialize, Deserialize)]
 //! struct Vec2 { x: i32, y: i32 };
 //!
-//! use rsdb::Database;
+//! use tqdb::Database;
 //! let db1: Database<i32> = Database::new();
 //! let db2: Database<&u8> = Database::from_iter("hello world".as_bytes().into_iter());
 //! let db3: Database<Vec2> = Database::from_iter(vec![ Vec2 { x: 0, y: 5 }, Vec2 { x: 100, y: 50 } ]);
@@ -44,14 +44,14 @@
 //! We can [search a database](search)...
 //! ```
 //! # use std::iter::FromIterator;
-//! use rsdb::{Database, Query, search, search_mut, remove};
+//! use tqdb::{Database, Query, search, search_mut, remove};
 //! let db = Database::from_iter(1..10);
 //! let found_items = search!(&db match |it: &i32| *it >= 5 && *it <= 7);
 //! ```
 //! ...[search a database (with mutable access)](search_mut)
 //! ```
 //! # use std::iter::FromIterator;
-//! # use rsdb::{Database, Query, search, search_mut, remove};
+//! # use tqdb::{Database, Query, search, search_mut, remove};
 //! # let mut db = Database::from_iter(1..10);
 //! let found_items_mut1 = search_mut!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
 //! # std::mem::drop(found_items_mut1);
@@ -61,14 +61,14 @@
 //! ...and [remove items](remove) easily!
 //! ```
 //! # use std::iter::FromIterator;
-//! # use rsdb::{Database, Query, search, search_mut, remove};
+//! # use tqdb::{Database, Query, search, search_mut, remove};
 //! # let mut db = Database::from_iter(1..10);
 //! let removed_items = remove!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
 //! ```
 //! If you don't want to use the macros, [queries][q] can be composed together like so:
 //! ```
 //! # use std::iter::FromIterator;
-//! use rsdb::{Database, Query};
+//! use tqdb::{Database, Query};
 //! let db = Database::from_iter(1..10);
 //! // boring, simple query
 //! db.search(Query::new(|it: &i32| *it < 5));
@@ -125,7 +125,7 @@ pub enum DatabaseError {
 /// We can create a database using any type.
 /// ```
 /// # use std::iter::FromIterator;
-/// use rsdb::Database;
+/// use tqdb::Database;
 /// let db1: Database<i32> = Database::new();
 /// let db2: Database<&u8> = Database::from_iter("hello world".as_bytes().into_iter());
 /// struct Vec2 { x: i32, y: i32 };
@@ -141,7 +141,7 @@ pub enum DatabaseError {
 /// #[derive(Serialize, Deserialize)]
 /// struct Vec2 { x: i32, y: i32 };
 ///
-/// use rsdb::Database;
+/// use tqdb::Database;
 /// let db1: Database<i32> = Database::new();
 /// let db2: Database<&u8> = Database::from_iter("hello world".as_bytes().into_iter());
 /// let db3: Database<Vec2> = Database::from_iter(vec![ Vec2 { x: 0, y: 5 }, Vec2 { x: 100, y: 50 } ]);
@@ -158,14 +158,14 @@ pub enum DatabaseError {
 /// We can [search a database](search)...
 /// ```
 /// # use std::iter::FromIterator;
-/// use rsdb::{Database, Query, search, search_mut, remove};
+/// use tqdb::{Database, Query, search, search_mut, remove};
 /// let db = Database::from_iter(1..10);
 /// let found_items = search!(&db match |it: &i32| *it >= 5 && *it <= 7);
 /// ```
 /// ...[search a database (with mutable access)](search_mut)
 /// ```
 /// # use std::iter::FromIterator;
-/// # use rsdb::{Database, Query, search, search_mut, remove};
+/// # use tqdb::{Database, Query, search, search_mut, remove};
 /// # let mut db = Database::from_iter(1..10);
 /// let found_items_mut1 = search_mut!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
 /// # std::mem::drop(found_items_mut1);
@@ -175,7 +175,7 @@ pub enum DatabaseError {
 /// ...and [remove items](Database::remove) easily!
 /// ```
 /// # use std::iter::FromIterator;
-/// # use rsdb::{Database, Query, search, search_mut, remove};
+/// # use tqdb::{Database, Query, search, search_mut, remove};
 /// # let mut db = Database::from_iter(1..10);
 /// let removed_items = remove!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
 /// ```
@@ -187,14 +187,14 @@ pub struct Database<T>(Vec<T>);
 /// [Searching a database](search)
 /// ```
 /// # use std::iter::FromIterator;
-/// use rsdb::{Database, Query, search, search_mut, remove};
+/// use tqdb::{Database, Query, search, search_mut, remove};
 /// let db = Database::from_iter(1..10);
 /// let found_items = search!(&db match |it: &i32| *it >= 5 && *it <= 7);
 /// ```
 /// ...[searching a database (with mutable access)](search_mut)
 /// ```
 /// # use std::iter::FromIterator;
-/// # use rsdb::{Database, Query, search, search_mut, remove};
+/// # use tqdb::{Database, Query, search, search_mut, remove};
 /// # let mut db = Database::from_iter(1..10);
 /// let found_items_mut1 = search_mut!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
 /// # std::mem::drop(found_items_mut1);
@@ -204,7 +204,7 @@ pub struct Database<T>(Vec<T>);
 /// ...and [remove items](remove) easily!
 /// ```
 /// # use std::iter::FromIterator;
-/// # use rsdb::{Database, Query, search, search_mut, remove};
+/// # use tqdb::{Database, Query, search, search_mut, remove};
 /// # let mut db = Database::from_iter(1..10);
 /// let removed_items = remove!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
 /// ```
@@ -213,14 +213,14 @@ pub struct Database<T>(Vec<T>);
 /// Simple query
 /// ```
 /// # use std::iter::FromIterator;
-/// use rsdb::{Database, Query};
+/// use tqdb::{Database, Query};
 /// let db = Database::from_iter(1..10);
 /// db.search(Query::new(|it: &i32| *it < 5));
 /// ```
 /// We can also chain together queries with the `&` and `|` operators
 /// ```
 /// # use std::iter::FromIterator;
-/// # use rsdb::{Database, Query};
+/// # use tqdb::{Database, Query};
 /// # let db = Database::from_iter(1..10);
 /// // cool AND query
 /// db.search( Query::new(|it: &i32| *it < 5) & Query::new(|it: &i32| *it > 2) );
@@ -255,14 +255,14 @@ impl<T> Database<T> {
     /// Simple query
     /// ```
     /// # use std::iter::FromIterator;
-    /// use rsdb::{Database, Query};
+    /// use tqdb::{Database, Query};
     /// let db = Database::from_iter(1..10);
     /// assert!([&1,&2,&3,&4].into_iter().eq(db.search(Query::new(|it: &i32| *it < 5))));
     /// ```
     /// We can also chain together queries with the `&` and `|` operators
     /// ```
     /// # use std::iter::FromIterator;
-    /// # use rsdb::{Database, Query};
+    /// # use tqdb::{Database, Query};
     /// # let mut db = Database::from_iter(1..10);
     /// // cool AND query
     /// assert!([&3,&4].into_iter().eq(
@@ -282,7 +282,7 @@ impl<T> Database<T> {
     /// Simple query
     /// ```
     /// # use std::iter::FromIterator;
-    /// use rsdb::{Database, Query};
+    /// use tqdb::{Database, Query};
     /// let mut db = Database::from_iter(1..10);
     /// assert!([&mut 1,&mut 2,&mut 3,&mut 4].into_iter().eq(
     ///     db.search_mut(Query::new(|it: &i32| *it < 5))));
@@ -290,7 +290,7 @@ impl<T> Database<T> {
     /// We can also chain together queries with the `&` and `|` operators
     /// ```
     /// # use std::iter::FromIterator;
-    /// # use rsdb::{Database, Query};
+    /// # use tqdb::{Database, Query};
     /// # let mut db = Database::from_iter(1..10);
     /// // cool AND query
     /// assert!([&mut 3,&mut 4].into_iter().eq(
@@ -308,7 +308,7 @@ impl<T> Database<T> {
     ///
     /// ## Example
     /// ```
-    /// use rsdb::Database;
+    /// use tqdb::Database;
     /// let mut db: Database<i32> = Database::new();
     /// db.insert(0);
     /// ```
@@ -322,7 +322,7 @@ impl<T> Database<T> {
     /// May raise an [DatabaseError::DuplicateItemInsertion] if trying to insert a duplicate item.
     /// ## Example
     /// ```
-    /// use rsdb::Database;
+    /// use tqdb::Database;
     /// let mut db: Database<i32> = Database::new();
     /// assert!(db.insert_unique(0).is_ok());
     /// assert!(db.insert_unique(1).is_ok());
@@ -348,7 +348,7 @@ impl<T> Database<T> {
     /// Simple query
     /// ```
     /// # use std::iter::FromIterator;
-    /// use rsdb::{Database, Query};
+    /// use tqdb::{Database, Query};
     /// let mut db = Database::from_iter(1..10);
     /// assert!([1,2,3,4].into_iter().eq(
     ///     db.remove(Query::new(|it: &i32| *it < 5))));
@@ -367,7 +367,7 @@ impl<T> Database<T> {
     /// ```
     /// # use std::fmt::Write;
     /// # use std::iter::FromIterator;
-    /// # use rsdb::Database;
+    /// # use tqdb::Database;
     /// // given a simple writer
     /// struct StringWriter(String);
     /// impl std::io::Write for StringWriter {
@@ -400,8 +400,8 @@ impl<T> Database<T> {
     /// ## Examples:
     /// ```no_run
     /// # use std::iter::FromIterator;
-    /// # use rsdb::DatabaseError;
-    /// use rsdb::Database;
+    /// # use tqdb::DatabaseError;
+    /// use tqdb::Database;
     /// # fn main() -> Result<(), DatabaseError> {
     /// let db: Database<i32> = Database::from_iter(1..10);
     /// db.save_to_file("test.db.json")?;
@@ -427,7 +427,7 @@ impl<T> Database<T> {
     /// ## Examples
     /// ```
     /// # use std::iter::FromIterator;
-    /// use rsdb::Database;
+    /// use tqdb::Database;
     /// let db: Database<i32> = Database::from_iter(1..10);
     /// for item in db.iter() {
     ///     println!("Item is {}!", item);
@@ -442,7 +442,7 @@ impl<T> Database<T> {
     /// ## Examples
     /// ```
     /// # use std::iter::FromIterator;
-    /// use rsdb::Database;
+    /// use tqdb::Database;
     /// let mut db: Database<i32> = Database::from_iter(1..10);
     /// for mut item in db.iter_mut() {
     ///     println!("Item was {}!", item);
@@ -516,7 +516,7 @@ impl<T> From<Vec<T>> for Database<T> {
 /// ## Examples
 /// ```
 /// # use std::iter::FromIterator;
-/// use rsdb::{Database, Query, remove};
+/// use tqdb::{Database, Query, remove};
 /// let mut db = Database::from_iter(1..10);
 /// let removed_items = remove!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
 /// ```
@@ -531,14 +531,14 @@ macro_rules! remove {
 /// ## Examples
 /// ```
 /// # use std::iter::FromIterator;
-/// use rsdb::{Database, Query, search};
+/// use tqdb::{Database, Query, search};
 /// let db = Database::from_iter(1..10);
 /// let found_items = search!(&db match |it: &i32| *it >= 5 && *it <= 7);
 /// ```
 /// Also lets us get a mutable iterator
 /// ```
 /// # use std::iter::FromIterator;
-/// use rsdb::{Database, Query, search};
+/// use tqdb::{Database, Query, search};
 /// let mut db = Database::from_iter(1..10);
 /// let found_items = search!(&mut db match |it: &i32| *it < 5).for_each(|mut item| *item += 5);
 /// ```
@@ -556,7 +556,7 @@ macro_rules! search {
 /// ## Examples
 /// ```
 /// # use std::iter::FromIterator;
-/// use rsdb::{Database, Query, search_mut};
+/// use tqdb::{Database, Query, search_mut};
 /// let mut db = Database::from_iter(1..10);
 /// let found_items = search_mut!(&mut db match |it: &i32| *it < 5).for_each(|mut item| *item += 5);
 /// ```

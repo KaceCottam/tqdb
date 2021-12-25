@@ -1,12 +1,12 @@
 [package]
-name = "rsdb"
-description = "RSDB is a small library for creating a query-able database that is encoded with json."
+name = "tqdb"
+description = "Tiny Query Database (TQDB) is a small library for creating a query-able database that is encoded with json."
 license-file = "LICENSE"
 version = "1.0.0"
 edition = "2021"
-homepage = "https://github.com/KaceCottam/rsdb"
+homepage = "https://github.com/KaceCottam/tqdb"
 readme = "README.md"
-repository = "https://github.com/KaceCottam/rsdb"
+repository = "https://github.com/KaceCottam/tqdb"
 keywords = ["database","json","small"]
 categories = ["database-implementations"]
 
