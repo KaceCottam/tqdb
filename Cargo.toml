@@ -1,9 +1,18 @@
 [package]
 name = "rsdb"
-version = "0.1.0"
+description = "RSDB is a small library for creating a query-able database that is encoded with json."
+license_file = "LICENSE"
+version = "1.0.0"
 edition = "2021"
+homepage = "https://github.com/KaceCottam/rsdb"
+readme = "README.md"
+repository = "https://github.com/KaceCottam/rsdb"
+keywords = ["database","json","small"]
+categories = ["database-implementations"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
 
 [dependencies]
 thiserror = "1.0"
