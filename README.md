@@ -8,7 +8,7 @@ and simple to use with the help of macros.
 ## Examples
 
 We can create a database using any type.
-```
+```rs
 # use std::iter::FromIterator;
 use tqdb::Database;
 let db1: Database<i32> = Database::new();
@@ -18,7 +18,7 @@ let db3: Database<Vec2> = Database::from_iter(vec![ Vec2 { x: 0, y: 5 }, Vec2 { 
 ```
 
 If the type is serializable, we can even save it as json!
-```no_run
+```rs
 # use std::error::Error;
 # use std::iter::FromIterator;
 # fn main() -> Result<(), Box<dyn Error>> {
@@ -41,14 +41,14 @@ db3.save_to_file("db3.json")?;
 We can query a database using macros!
 
 We can search a database...
-```
+```rs
 # use std::iter::FromIterator;
 use tqdb::{Database, Query, search, search_mut, remove};
 let db = Database::from_iter(1..10);
 let found_items = search!(&db match |it: &i32| *it >= 5 && *it <= 7);
 ```
 ...search a database (with mutable access)
-```
+```rs
 # use std::iter::FromIterator;
 # use tqdb::{Database, Query, search, search_mut, remove};
 # let mut db = Database::from_iter(1..10);
@@ -58,14 +58,14 @@ let found_items_mut1 = search_mut!(&mut db match |it: &i32| *it >= 5 && *it <= 7
 let found_items_mut2 = search!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
 ```
 ...and remove items easily!
-```
+```rs
 # use std::iter::FromIterator;
 # use tqdb::{Database, Query, search, search_mut, remove};
 # let mut db = Database::from_iter(1..10);
 let removed_items = remove!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
 ```
 If you don't want to use the macros, queries can be composed together like so:
-```
+```rs
 # use std::iter::FromIterator;
 use tqdb::{Database, Query};
 let db = Database::from_iter(1..10);
