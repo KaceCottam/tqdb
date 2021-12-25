@@ -1,7 +1,7 @@
 [package]
 name = "rsdb"
 description = "RSDB is a small library for creating a query-able database that is encoded with json."
-license_file = "LICENSE"
+license-file = "LICENSE"
 version = "1.0.0"
 edition = "2021"
 homepage = "https://github.com/KaceCottam/rsdb"
@@ -10,15 +10,11 @@ repository = "https://github.com/KaceCottam/rsdb"
 keywords = ["database","json","small"]
 categories = ["database-implementations"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[lib]
-
 [dependencies]
 thiserror = "1.0"
 serde = "1.0.132"
+serde_derive = "1.0.132"
 serde_json = "1.0.73"
 
 [dev-dependencies]
-serde_derive = "1.0.132"
 mutagen = { git = "https://github.com/llogiq/mutagen" }
