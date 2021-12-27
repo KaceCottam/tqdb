@@ -417,7 +417,7 @@ impl<T> Database<T> {
     where
         T: serde::Serialize,
     {
-        let outfile = File::open(p).map_err(|_| DatabaseError::BadWrite)?;
+        let outfile = File::create(p).map_err(|_| DatabaseError::BadWrite)?;
         self.save(&mut BufWriter::new(outfile))
     }
 
