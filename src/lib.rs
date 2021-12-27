@@ -46,24 +46,24 @@
 //! # use std::iter::FromIterator;
 //! use tqdb::{Database, Query, search, search_mut, remove};
 //! let db = Database::from_iter(1..10);
-//! let found_items = search!(&db match |it: &i32| *it >= 5 && *it <= 7);
+//! let found_items = search!(&db => |it: &i32| *it >= 5 && *it <= 7);
 //! ```
 //! ...[search a database (with mutable access)](search_mut)
 //! ```
 //! # use std::iter::FromIterator;
 //! # use tqdb::{Database, Query, search, search_mut, remove};
 //! # let mut db = Database::from_iter(1..10);
-//! let found_items_mut1 = search_mut!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
+//! let found_items_mut1 = search_mut!(&mut db => |it: &i32| *it >= 5 && *it <= 7);
 //! # std::mem::drop(found_items_mut1);
 //! // or
-//! let found_items_mut2 = search!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
+//! let found_items_mut2 = search!(&mut db => |it: &i32| *it >= 5 && *it <= 7);
 //! ```
 //! ...and [remove items](remove) easily!
 //! ```
 //! # use std::iter::FromIterator;
 //! # use tqdb::{Database, Query, search, search_mut, remove};
 //! # let mut db = Database::from_iter(1..10);
-//! let removed_items = remove!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
+//! let removed_items = remove!(&mut db => |it: &i32| *it >= 5 && *it <= 7);
 //! ```
 //! If you don't want to use the macros, [queries][q] can be composed together like so:
 //! ```
@@ -160,24 +160,24 @@ pub enum DatabaseError {
 /// # use std::iter::FromIterator;
 /// use tqdb::{Database, Query, search, search_mut, remove};
 /// let db = Database::from_iter(1..10);
-/// let found_items = search!(&db match |it: &i32| *it >= 5 && *it <= 7);
+/// let found_items = search!(&db => |it: &i32| *it >= 5 && *it <= 7);
 /// ```
 /// ...[search a database (with mutable access)](search_mut)
 /// ```
 /// # use std::iter::FromIterator;
 /// # use tqdb::{Database, Query, search, search_mut, remove};
 /// # let mut db = Database::from_iter(1..10);
-/// let found_items_mut1 = search_mut!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
+/// let found_items_mut1 = search_mut!(&mut db => |it: &i32| *it >= 5 && *it <= 7);
 /// # std::mem::drop(found_items_mut1);
 /// // or
-/// let found_items_mut2 = search!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
+/// let found_items_mut2 = search!(&mut db => |it: &i32| *it >= 5 && *it <= 7);
 /// ```
 /// ...and [remove items](Database::remove) easily!
 /// ```
 /// # use std::iter::FromIterator;
 /// # use tqdb::{Database, Query, search, search_mut, remove};
 /// # let mut db = Database::from_iter(1..10);
-/// let removed_items = remove!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
+/// let removed_items = remove!(&mut db => |it: &i32| *it >= 5 && *it <= 7);
 /// ```
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default, Serialize, Deserialize)]
 pub struct Database<T>(Vec<T>);
@@ -189,24 +189,24 @@ pub struct Database<T>(Vec<T>);
 /// # use std::iter::FromIterator;
 /// use tqdb::{Database, Query, search, search_mut, remove};
 /// let db = Database::from_iter(1..10);
-/// let found_items = search!(&db match |it: &i32| *it >= 5 && *it <= 7);
+/// let found_items = search!(&db => |it: &i32| *it >= 5 && *it <= 7);
 /// ```
 /// ...[searching a database (with mutable access)](search_mut)
 /// ```
 /// # use std::iter::FromIterator;
 /// # use tqdb::{Database, Query, search, search_mut, remove};
 /// # let mut db = Database::from_iter(1..10);
-/// let found_items_mut1 = search_mut!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
+/// let found_items_mut1 = search_mut!(&mut db => |it: &i32| *it >= 5 && *it <= 7);
 /// # std::mem::drop(found_items_mut1);
 /// // or even use
-/// let found_items_mut2 = search!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
+/// let found_items_mut2 = search!(&mut db => |it: &i32| *it >= 5 && *it <= 7);
 /// ```
 /// ...and [remove items](remove) easily!
 /// ```
 /// # use std::iter::FromIterator;
 /// # use tqdb::{Database, Query, search, search_mut, remove};
 /// # let mut db = Database::from_iter(1..10);
-/// let removed_items = remove!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
+/// let removed_items = remove!(&mut db => |it: &i32| *it >= 5 && *it <= 7);
 /// ```
 /// If you don't want to use the macros, [queries][Query] can be composed together like so:
 ///
@@ -518,11 +518,11 @@ impl<T> From<Vec<T>> for Database<T> {
 /// # use std::iter::FromIterator;
 /// use tqdb::{Database, Query, remove};
 /// let mut db = Database::from_iter(1..10);
-/// let removed_items = remove!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
+/// let removed_items = remove!(&mut db => |it: &i32| *it >= 5 && *it <= 7);
 /// ```
 #[macro_export]
 macro_rules! remove {
-    (&mut $db:ident match $p:expr) => {
+    (&mut $db:expr => $p:expr) => {
         $db.remove(Query::new($p))
     };
 }
@@ -533,21 +533,21 @@ macro_rules! remove {
 /// # use std::iter::FromIterator;
 /// use tqdb::{Database, Query, search};
 /// let db = Database::from_iter(1..10);
-/// let found_items = search!(&db match |it: &i32| *it >= 5 && *it <= 7);
+/// let found_items = search!(&db => |it: &i32| *it >= 5 && *it <= 7);
 /// ```
 /// Also lets us get a mutable iterator
 /// ```
 /// # use std::iter::FromIterator;
 /// use tqdb::{Database, Query, search};
 /// let mut db = Database::from_iter(1..10);
-/// let found_items = search!(&mut db match |it: &i32| *it < 5).for_each(|mut item| *item += 5);
+/// let found_items = search!(&mut db => |it: &i32| *it < 5).for_each(|mut item| *item += 5);
 /// ```
 #[macro_export]
 macro_rules! search {
-    (&$db:ident match $p:expr) => {
+    (&$db:expr => $p:expr) => {
         $db.search(Query::new($p))
     };
-    (&mut $db:ident match $p:expr) => {
+    (&mut $db:expr => $p:expr) => {
         $db.search_mut(Query::new($p))
     };
 }
@@ -558,12 +558,12 @@ macro_rules! search {
 /// # use std::iter::FromIterator;
 /// use tqdb::{Database, Query, search_mut};
 /// let mut db = Database::from_iter(1..10);
-/// let found_items = search_mut!(&mut db match |it: &i32| *it < 5).for_each(|mut item| *item += 5);
+/// let found_items = search_mut!(&mut db => |it: &i32| *it < 5).for_each(|mut item| *item += 5);
 /// ```
 /// Also see [search]
 #[macro_export]
 macro_rules! search_mut {
-    (&mut $db:ident match $p:expr) => {
+    (&mut $db:expr => $p:expr) => {
         $db.search_mut(Query::new($p))
     };
 }
@@ -697,11 +697,11 @@ mod tests {
         let mut db =
             Database::from_iter([Coordinate::new(0, 0), Coordinate::new(0, 1)].into_iter());
         assert_eq!(
-            search!(&db match |it: &Coordinate| it.x == it.y).collect::<Vec<&Coordinate>>(),
+            search!(&db => |it: &Coordinate| it.x == it.y).collect::<Vec<&Coordinate>>(),
             vec![&Coordinate::new(0, 0)]
         );
         assert_eq!(
-            search!(&mut db match |it: &Coordinate| it.x == it.y).collect::<Vec<&mut Coordinate>>(),
+            search!(&mut db => |it: &Coordinate| it.x == it.y).collect::<Vec<&mut Coordinate>>(),
             vec![&mut Coordinate::new(0, 0)]
         );
     }
@@ -711,7 +711,7 @@ mod tests {
         let mut db =
             Database::from_iter([Coordinate::new(0, 0), Coordinate::new(0, 1)].into_iter());
         assert_eq!(
-            search_mut!(&mut db match |it: &Coordinate| it.x == it.y)
+            search_mut!(&mut db => |it: &Coordinate| it.x == it.y)
                 .collect::<Vec<&mut Coordinate>>(),
             vec![&mut Coordinate::new(0, 0)]
         );
@@ -722,7 +722,7 @@ mod tests {
         let mut db =
             Database::from_iter([Coordinate::new(0, 0), Coordinate::new(0, 1)].into_iter());
         assert_eq!(
-            remove!(&mut db match |it: &Coordinate| it.x == it.y).collect::<Vec<Coordinate>>(),
+            remove!(&mut db => |it: &Coordinate| it.x == it.y).collect::<Vec<Coordinate>>(),
             vec![Coordinate::new(0, 0)]
         );
         assert_eq!(
@@ -749,5 +749,14 @@ mod tests {
     fn test_from_vec() {
         let db = Database::from(vec![1, 2, 3, 4, 5]);
         assert!(vec![1, 2, 3, 4, 5].iter().eq(db.iter()));
+    }
+
+    #[test]
+    fn test_macro_with_complex() {
+        struct T(Database<i32>);
+        let db = T { 0: Database::from_iter(1..10) };
+        assert!(Vec::from_iter(1..5).iter().eq(
+            search!(&db.0 => |it: &i32| *it<5)
+        ));
     }
 }

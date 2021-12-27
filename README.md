@@ -37,17 +37,17 @@ We can search a database...
 ```rust
 use tqdb::{Database, Query, search, search_mut, remove};
 let db = Database::from_iter(1..10);
-let found_items = search!(&db match |it: &i32| *it >= 5 && *it <= 7);
+let found_items = search!(&db => |it: &i32| *it >= 5 && *it <= 7);
 ```
 ...search a database (with mutable access)
 ```rust
-let found_items_mut1 = search_mut!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
+let found_items_mut1 = search_mut!(&mut db => |it: &i32| *it >= 5 && *it <= 7);
 // or
-let found_items_mut2 = search!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
+let found_items_mut2 = search!(&mut db => |it: &i32| *it >= 5 && *it <= 7);
 ```
 ...and remove items easily!
 ```rust
-let removed_items = remove!(&mut db match |it: &i32| *it >= 5 && *it <= 7);
+let removed_items = remove!(&mut db => |it: &i32| *it >= 5 && *it <= 7);
 ```
 If you don't want to use the macros, queries can be composed together like so:
 ```rust
