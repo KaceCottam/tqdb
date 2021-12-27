@@ -80,6 +80,7 @@
 //! [d]: Database
 //! [q]: Query
 
+#![warn(rustdoc::all)]
 #![feature(drain_filter)]
 #![feature(fn_traits)]
 #![feature(no_coverage)]
@@ -181,6 +182,9 @@ pub enum DatabaseError {
 /// ```
 #[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default, Serialize, Deserialize)]
 pub struct Database<T>(Vec<T>);
+
+unsafe impl<T> Send for Database<T> {}
+unsafe impl<T> Sync for Database<T> {}
 
 /// A query lets us check our database
 /// ## Examples
